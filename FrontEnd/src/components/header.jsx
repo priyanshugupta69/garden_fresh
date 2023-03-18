@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Outlet } from 'react-router-dom'
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -15,7 +16,8 @@ function classNames(...classes) {
 
 export default function Header() {
   return (
-    <Disclosure as="nav" className="bg-[#f2eeeb]/0 ">
+    <div>
+     <Disclosure as="nav" className="bg-[#f2eeeb]/0 ">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
@@ -151,5 +153,13 @@ export default function Header() {
         </>
       )}
     </Disclosure>
+    <Outlet />
+
+    </div>
+    
+   
+   
+    
+    
   )
 }

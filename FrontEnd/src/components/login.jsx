@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ export default function Login() {
       var data =  {"email": email,
       "password": password,};
       try {
-        const response = await axios.post('http://localhost:5000/login',data , {
+        const response = await axios.post('http://localhost:3000/login',data , {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
@@ -21,7 +22,7 @@ export default function Login() {
         console.log(response);
         alert(response.data)
       } catch (error) {
-        console.log("ushdkjasdkaskjh",error);
+        console.log(error);
         alert("User Not Found")
         window.location.href = "http://localhost:3000/signup"
       }
@@ -29,6 +30,7 @@ export default function Login() {
 
     
   };
+
   return (
     <div> 
       <div className="h-screen flex items-center justify-center z-10">
@@ -72,9 +74,12 @@ export default function Login() {
       
     </div>
     <div className='flex items-center justify-center -my-44 '>
-  <button class= "bg-red-400 hover:bg-red-500 text-white py-2 px-4 hover:border-transparent rounded">
-  Google
-</button>
+    <a href="http://localhost:3001/auth/google">
+    <button class= "bg-red-400 hover:bg-red-500 text-white py-2 px-4 hover:border-transparent rounded"> Google</button>
+  
+    </a>
+  
+
     </div>
     
     
