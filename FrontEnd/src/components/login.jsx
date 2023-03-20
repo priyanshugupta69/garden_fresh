@@ -5,6 +5,23 @@ import { Link } from 'react-router-dom';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const redirectToGoogleSSO = async () => {
+    let timer = null
+    const googleLoginURL = "http://localhost:3001/auth/google";
+    const newWindow = window.open(
+      googleLoginURL,
+      "_blank",
+      "width=500,height=600"
+    );
+  
+    if (newWindow) {
+      timer = setInterval(() => {
+        if (newWindow.closed) {
+          console.log("Yay we're authenticated");
+        }
+      }, 500);
+    }
+  };
 
   const handleSubmit = async(event) => {
     event.preventDefault();
@@ -74,10 +91,10 @@ export default function Login() {
       
     </div>
     <div className='flex items-center justify-center -my-44 '>
-    <a href="http://localhost:3001/auth/google">
-    <button class= "bg-red-400 hover:bg-red-500 text-white py-2 px-4 hover:border-transparent rounded"> Google</button>
+    {/* <a href="http://localhost:3001/auth/google"> */}
+    <button onClick={redirectToGoogleSSO} class= "bg-red-400 hover:bg-red-500 text-white py-2 px-4 hover:border-transparent rounded"> Google</button>
   
-    </a>
+    {/* </a> */}
   
 
     </div>
