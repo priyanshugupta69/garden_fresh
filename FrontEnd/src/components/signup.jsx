@@ -19,7 +19,7 @@ export default function Signup() {
             var data =  {"email": email,
             "password": password,};
             try {
-              const response = await axios.post('http://localhost:5000/signup',data , {
+              const response = await axios.post('http://localhost:3001/signup',data , {
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'
                 }

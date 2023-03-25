@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const session = require('express-session');
+const findOrCreate = require('mongoose-findorcreate')
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -13,8 +14,17 @@ mongoose.connect("mongodb://127.0.0.1:27017/GardenFesh", { useNewUrlParser: true
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
+  googleId: String
 })
+const productSchema = new mongoose.Schema({
+  id: Number,
+  name: String,
+  price: Number,
+})
+userSchema.plugin(findOrCreate);
 const User = new mongoose.model("User", userSchema);
+const Product = new mongoose.model("Product", productSchema);
+
 app.use(session({
   secret: '7861',
   resave: false,
@@ -39,7 +49,7 @@ app.post("/login", cors(), async (req, res) => {
     console.log("data",data)
     if(data){
       if(data.password === test.password){
-        res.send("login succesfull")
+        res.send("loggedIN")
       }
       else{
         res.send("wrong password")
@@ -49,9 +59,6 @@ app.post("/login", cors(), async (req, res) => {
       console.log("user not found")
       res.redirect("http://localhost:3000/signup")
     }
-
-
-
   }
   catch (error) {
     console.log(error);
@@ -59,16 +66,52 @@ app.post("/login", cors(), async (req, res) => {
  
 
 })
+app.get("/products" , cors() , async (req , res) => {
+  try{
+    const products = await Product.find({})
+    res.send(products)
+
+  }
+  catch (error) {
+    res.send(error)
+  }
+  
+})
 passport.use(new GoogleStrategy({
   clientID: "525994195892-ujh7g873ot9o2ehit0qu0d3ibs39j8ld.apps.googleusercontent.com",
   clientSecret: "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",
   callbackURL: "http://localhost:3001/auth/google/home",
   passReqToCallback: true
 },
-function(req ,accessToken, refreshToken, profile, cb) {
-  console.log(profile)
-  cb(null , profile);
+async function(req ,accessToken, refreshToken, profile, cb) {
+  const test = {
+    email : "",
+    password: "",
+    googleId: profile.id
 
+  }
+  try{
+    const data = await User.findOne({ 'googleId': profile.id });
+    if(data){
+     return cb(null, data)
+
+    }
+    else{
+      const user = new User(
+        test
+      )
+      user.save()
+      return cb(null, user)
+      
+      
+    }
+
+
+
+  }
+  catch (error) {
+    console.log(error);
+  }
   
 }
  
