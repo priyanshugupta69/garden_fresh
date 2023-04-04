@@ -13,6 +13,7 @@ import Login from "./components/login.jsx"
 import Signup from "./components/signup.jsx"
 import Root from "./components/RootLayout.js"
 import Products from "./components/Products.jsx"
+import About from "./components/about.jsx"
 const user = false;
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       <Route path = "/" element={<Header/>}>
         <Route index element={<Hero />} />
         <Route path="products" element={<Products />} />
+        <Route path="about" element={<div><About/></div>} />
       
       
       </Route>

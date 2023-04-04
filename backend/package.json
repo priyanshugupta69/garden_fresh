@@ -19,6 +19,7 @@
     "mongoose-findorcreate": "^3.0.0",
     "nodemon": "^2.0.21",
     "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "store": "^2.0.12"
   }
 }

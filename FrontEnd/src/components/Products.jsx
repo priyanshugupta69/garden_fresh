@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ProductCard from './productCard.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -19,18 +20,13 @@ function ProductsPage() {
   }, []);
 
   return (
-    <div>
-      <h1>Products</h1>
-      <ul>
-        {products.map(product => (
-          <li key={product.id}>
-            <Link to={`/products/${product.id}`}>{product.name}</Link>
-            <p>{product.description}</p>
-            <p>${product.price}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div className="flex flex-wrap justify-center">
+    {products.map((product) => (
+      <div key={product.id} className="m-4">
+        <ProductCard product={product} />
+      </div>
+    ))}
+  </div>
   );
 }
 

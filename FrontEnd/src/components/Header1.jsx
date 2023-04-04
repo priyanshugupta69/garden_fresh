@@ -1,10 +1,13 @@
 import React from "react";
 import { useState } from "react";
-const Navbar = () => {
+function Header(){
     return(
-        <nav>
-            <div className="w-full flex py-6 justify-between items-center">
-            </div>
-        </nav>
+        
+            <nav className="w-full flex py-6 justify-between items-center navbar bg-yellow-100 ">
+               
+
+            </nav>
+        
     )
 }
+export default Header;

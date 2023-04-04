@@ -10,6 +10,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { createProxyMiddleware } = require('http-proxy-middleware');
 app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
+const store = require('store');
 mongoose.connect("mongodb://127.0.0.1:27017/GardenFesh", { useNewUrlParser: true });
 const userSchema = new mongoose.Schema({
   email: String,
@@ -49,7 +50,7 @@ app.post("/login", cors(), async (req, res) => {
     console.log("data",data)
     if(data){
       if(data.password === test.password){
-        res.send("loggedIN")
+        res.send({message:"success",email:data.email})
       }
       else{
         res.send("wrong password")
@@ -85,7 +86,7 @@ passport.use(new GoogleStrategy({
 },
 async function(req ,accessToken, refreshToken, profile, cb) {
   const test = {
-    email : "",
+    email : '',
     password: "",
     googleId: profile.id
 
@@ -103,10 +104,7 @@ async function(req ,accessToken, refreshToken, profile, cb) {
       user.save()
       return cb(null, user)
       
-      
     }
-
-
 
   }
   catch (error) {
@@ -152,7 +150,8 @@ app.get('/auth/google/home',
   passport.authenticate('google' , { failureRedirect: 'http://localhost:3000/login' , 
   failureMessage: "Cannot login to Google, please try again later!" }),
   (req, res) => {
-    res.redirect("http://localhost:3000/auth/google/home");
+    console.log(req.user.googleId);
+    res.redirect("http://localhost:3000?googleId="+req.user.googleId);
   }
   );
 app.listen(3001, () => {
