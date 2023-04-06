@@ -21,6 +21,7 @@ const productSchema = new mongoose.Schema({
   id: Number,
   name: String,
   price: Number,
+  image: String
 })
 userSchema.plugin(findOrCreate);
 const User = new mongoose.model("User", userSchema);
@@ -78,6 +79,9 @@ app.get("/products" , cors() , async (req , res) => {
   }
   
 })
+
+
+
 passport.use(new GoogleStrategy({
   clientID: "525994195892-ujh7g873ot9o2ehit0qu0d3ibs39j8ld.apps.googleusercontent.com",
   clientSecret: "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",
