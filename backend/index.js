@@ -8,9 +8,12 @@ const findOrCreate = require('mongoose-findorcreate')
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { createProxyMiddleware } = require('http-proxy-middleware');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ limit:'50mb' ,extended: true }));
+app.use(bodyParser.json({ limit: '50mb'}));
+
 const cors = require('cors');
 const store = require('store');
+const { name } = require('store/storages/cookieStorage');
 mongoose.connect("mongodb://127.0.0.1:27017/GardenFesh", { useNewUrlParser: true });
 const userSchema = new mongoose.Schema({
   email: String,
@@ -21,6 +24,8 @@ const productSchema = new mongoose.Schema({
   id: Number,
   name: String,
   price: Number,
+  description: String,
+  type: String,
   image: String
 })
 userSchema.plugin(findOrCreate);
@@ -43,6 +48,55 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
   done(null, user);
 });
+app.post("/upload", cors(), async (req, res) => {
+
+  console.log(req.body)
+  const test = req.body
+  const product = new Product(
+    test
+  
+  )
+  product.save()
+  res.send("Uploaded Successfully")
+})
+app.post("/update", cors(), async (req, res) => {
+  
+    console.log(req.body)
+    try{
+      const data = await Product.find({ name: req.body.ProductName });
+      if(data){
+        console.log(data)
+        res.send(data)
+  
+      }
+      else{
+        console.log("user not found")
+        res.send("user not found")
+      }
+    }
+    catch (error) {
+      console.log(error);
+      res.send(error)
+      
+    }
+    
+    
+      
+  
+    
+})
+app.patch("/update/:id", cors(), async (req, res) => {
+  try{
+    const dataId = req.params.id
+    const update = req.body
+    const response = await Product.findByIdAndUpdate(dataId,update , {new:true})
+    console.log(response);
+    res.send("updated successfully")
+  }catch(err){
+    console.log(err);
+    res.send(err)
+  }
+})
 app.post("/login", cors(), async (req, res) => {
   const test = req.body
   console.log(test)
@@ -133,13 +187,8 @@ app.post("/signup", cors(), async (req, res) => {
         test
       )
       user.save()
-      res.send("signup succesfull")
-      
-      
+      res.send("signup succesfull")  
     }
-
-
-
   }
   catch (error) {
     console.log(error);
