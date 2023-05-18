@@ -14,6 +14,10 @@ import Signup from "./components/signup.jsx"
 import Root from "./components/RootLayout.js"
 import Products from "./components/Products.jsx"
 import About from "./components/about.jsx"
+import ImageUpload from './components/adminUpload';
+import AdminControl from './components/admin';
+import Update from './components/adminUpdate';
+import ProductUpdate from './components/productUpdate';
 const user = false;
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +26,11 @@ const router = createBrowserRouter(
         <Route index element={<Hero />} />
         <Route path="products" element={<Products />} />
         <Route path="about" element={<div><About/></div>} />
+        <Route path = "admin" element = {<AdminControl/>}/>
+        <Route path = "admin/upload" element = {<ImageUpload/>}/>
+        <Route path = "admin/update" element = {<Update/>}/>
+        <Route path = "admin/update/:_id" element = {<ProductUpdate/>}/>
+
       
       
       </Route>
@@ -29,6 +38,8 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       <Route path = "auth/google/home" element = {<div>google auth</div>}/>
+  
+     
 
     </Route>
 

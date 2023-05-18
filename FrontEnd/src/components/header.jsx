@@ -18,7 +18,7 @@ export default function Header() {
     About: 3,
     Contact: 4
   }
-  let [curr, setcurr] = useState("Home");
+  const [curr, setcurr] = useState("");
   const [completed, setCompleted] = useState({});
   const handleClick = (item) => {
     setcurr(item.name);
