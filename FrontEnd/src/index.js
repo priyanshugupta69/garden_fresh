@@ -18,6 +18,9 @@ import ImageUpload from './components/adminUpload';
 import AdminControl from './components/admin';
 import Update from './components/adminUpdate';
 import ProductUpdate from './components/productUpdate';
+import Contact from './components/contact';
+import Del from './components/delete.jsx';
+import ProductDelete from './components/productDelete';
 const user = false;
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,11 +28,15 @@ const router = createBrowserRouter(
       <Route path = "/" element={<Header/>}>
         <Route index element={<Hero />} />
         <Route path="products" element={<Products />} />
-        <Route path="about" element={<div><About/></div>} />
+        <Route path="about" element={<About/>} />
+        <Route path="contact" element={<Contact/>} />
         <Route path = "admin" element = {<AdminControl/>}/>
         <Route path = "admin/upload" element = {<ImageUpload/>}/>
         <Route path = "admin/update" element = {<Update/>}/>
+        <Route path = "admin/delete" element = {<Del/>}/>
+        <Route path = "admin/delete/:_id" element = {<ProductDelete/>}/>
         <Route path = "admin/update/:_id" element = {<ProductUpdate/>}/>
+
 
       
       

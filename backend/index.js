@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const session = require('express-session');
 const findOrCreate = require('mongoose-findorcreate')
+const crypto = require('crypto')
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -14,7 +15,9 @@ app.use(bodyParser.json({ limit: '50mb'}));
 const cors = require('cors');
 const store = require('store');
 const { name } = require('store/storages/cookieStorage');
-mongoose.connect("mongodb://127.0.0.1:27017/GardenFesh", { useNewUrlParser: true });
+var password = encodeURIComponent("#KINGraja123");
+
+mongoose.connect(`mongodb+srv://priyanshugupta:${password}@gardenfreshcluster.q0wiwfp.mongodb.net/?retryWrites=true&w=majority`, { useNewUrlParser: true });
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -97,9 +100,22 @@ app.patch("/update/:id", cors(), async (req, res) => {
     res.send(err)
   }
 })
+app.delete("/admin/delete/:id", cors(), async (req, res) => {
+  try{
+    const dataId = req.params.id
+    console.log(dataId);
+    const response = await Product.findByIdAndDelete(dataId)
+    console.log(response);
+    res.send("deleted successfully")
+  }catch(err){
+    console.log(err);
+    res.send(err);
+  }
+})
 app.post("/login", cors(), async (req, res) => {
   const test = req.body
   console.log(test)
+  test.password = await sha256(test.password);
   try{
     const data = await User.findOne({ 'email': test.email });
     console.log("data",data)
@@ -173,9 +189,26 @@ async function(req ,accessToken, refreshToken, profile, cb) {
  
 ));
 
-app.post("/signup", cors(), async (req, res) => {
+async function sha256(message) {
+  // encode as UTF-8
+  const msgBuffer = new TextEncoder().encode(message);                    
 
+  // hash the message
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+  // convert ArrayBuffer to Array
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  // convert bytes to hex string                  
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
+app.post("/signup", cors(), async (req, res) => {
+  
   const test = req.body;
+  // console.log("hash = ",await sha256(test.password));
+  test.password = await sha256(test.password);
   try{
     const data = await User.findOne({ 'email': test.email });
     if(data){
