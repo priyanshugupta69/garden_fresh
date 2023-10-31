@@ -18,9 +18,9 @@ const ProductCard = ({ product }) => {
           <div className=" bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
             ${product.price}
           </div>
-         <div className="ml-auto bg-[#2bc6eb] rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+         <button href = "/#" className="ml-auto bg-[#2bc6eb] rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
             Buy
-          </div>
+          </button>
         </div>
       </div>
     </div>
